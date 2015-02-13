@@ -14,5 +14,19 @@
 package watchtower.common.automation;
 
 public class JobResult {
-
+  private String jobId;
+  private String output;
+  
+  public JobResult(String jobId, String output) {
+    this.jobId = jobId;
+    this.output = output;
+  }
+  
+  public String getJobId() {
+    return jobId;
+  }
+  
+  public String getOutput() {
+    return output;
+  }
 }
