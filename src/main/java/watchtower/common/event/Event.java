@@ -15,9 +15,42 @@ package watchtower.common.event;
 
 import java.io.Serializable;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Event implements Serializable {
   private static final long serialVersionUID = -1783919866246632640L;
   
-  public EventServiceModel serviceModel;
-  public String message; 
+  @NotEmpty
+  private String id;
+  
+  @NotEmpty
+  private EventServiceModel serviceModel;
+  
+  @NotEmpty
+  private String message;
+  
+  @JsonCreator
+  public Event(@JsonProperty("id") String id, @JsonProperty("serviceModel") EventServiceModel serviceModel, @JsonProperty("message") String message) {
+    this.id = id;
+    this.serviceModel = serviceModel;
+    this.message = message;
+  }
+  
+  @JsonProperty("id")
+  public String getId() {
+    return id;
+  }
+  
+  @JsonProperty("serviceModel")
+  public EventServiceModel getServiceModel() {
+    return serviceModel;
+  }
+  
+  @JsonProperty("message")
+  public String getMessage() {
+    return message;
+  }
 }
