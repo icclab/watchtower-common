@@ -14,5 +14,5 @@
 package watchtower.common.event;
 
 public enum EventServiceModel {
-  HaaS,IaaS, PaaS, SaaS 
+  HaaS, IaaS, PaaS, SaaS 
 }

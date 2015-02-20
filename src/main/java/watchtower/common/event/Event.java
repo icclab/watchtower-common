@@ -13,27 +13,31 @@
  */
 package watchtower.common.event;
 
+import io.dropwizard.validation.ValidationMethod;
+
 import java.io.Serializable;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 public class Event implements Serializable {
   private static final long serialVersionUID = -1783919866246632640L;
   
-  @NotEmpty
+  @NotEmpty(message="Empty id")
   private String id;
   
-  @NotEmpty
+  @NotEmpty(message="Empty service model")
   private EventServiceModel serviceModel;
   
-  @NotEmpty
+  @NotEmpty(message="Empty message")
   private String message;
   
   @JsonCreator
-  public Event(@JsonProperty("id") String id, @JsonProperty("serviceModel") EventServiceModel serviceModel, @JsonProperty("message") String message) {
+  public Event(@JsonProperty("id") String id, @JsonProperty("serviceModel") EventServiceModel serviceModel,
+      @JsonProperty("message") String message) {
     this.id = id;
     this.serviceModel = serviceModel;
     this.message = message;
@@ -52,5 +56,18 @@ public class Event implements Serializable {
   @JsonProperty("message")
   public String getMessage() {
     return message;
+  }
+  
+  @ValidationMethod
+  public boolean isValid() {
+    return true;
+  }
+  
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("serviceModel", serviceModel)
+        .add("message", message)
+        .toString();
   }
 }
