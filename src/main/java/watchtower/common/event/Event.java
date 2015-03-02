@@ -58,6 +58,28 @@ public class Event implements Serializable {
     return message;
   }
   
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    
+    if (obj == null)
+      return false;
+    
+    if (getClass() != obj.getClass())
+      return false;
+    
+    Event other = (Event) obj;
+    
+    if (!other.getId().equalsIgnoreCase(id))
+      return false;
+    
+    if (!other.getMessage().equalsIgnoreCase(message))
+      return false;
+    
+    return true;
+  }
+  
   @ValidationMethod
   public boolean isValid() {
     return true;

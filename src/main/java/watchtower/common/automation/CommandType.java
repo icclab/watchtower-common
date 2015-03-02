@@ -13,10 +13,6 @@
  */
 package watchtower.common.automation;
 
-public class ExecuteJobCommand extends Command {
-  private Job job;
-  
-  public Job getJob() {
-    return job;
-  }
+public enum CommandType {
+  CREATE_JOB
 }

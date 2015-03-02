@@ -15,6 +15,8 @@ package watchtower.common.automation;
 
 import java.util.Map;
 
+import com.google.common.base.MoreObjects;
+
 public class Job {
   private String id;
   private String name;
@@ -30,5 +32,13 @@ public class Job {
   
   public Map<String, String> getParameters() {
     return parameters;
+  }
+  
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("id", id)
+        .add("name", name)
+        .add("parameters", parameters)
+        .toString();
   }
 }

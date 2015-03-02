@@ -13,10 +13,51 @@
  */
 package watchtower.common.automation;
 
-public abstract class Command {
-  private String name;
+import com.google.common.base.MoreObjects;
+
+public class Command {
+  private CommandType type;
+  private Job job;
   
-  public String getName() {
-    return name;
+  public Command(CommandType type, Job job) {
+    this.type = type;
+    this.job = job;
+  }
+  
+  public CommandType getType() {
+    return type;
+  }
+  
+  public Job getJob() {
+    return job;
+  }
+  
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    
+    if (obj == null)
+      return false;
+    
+    if (getClass() != obj.getClass())
+      return false;
+    
+    Command other = (Command) obj;
+    
+    if (other.getType() != type)
+      return false;
+    
+    if (!other.getJob().equals(job))
+      return false;
+    
+    return true;
+  }
+  
+  public String toString() {
+    return MoreObjects.toStringHelper(this)
+        .add("type", type)
+        .add("job", job)
+        .toString();
   }
 }
