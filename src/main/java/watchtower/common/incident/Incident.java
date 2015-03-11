@@ -18,17 +18,63 @@ import java.util.List;
 
 import watchtower.common.event.Event;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
 public class Incident implements Serializable {
   private static final long serialVersionUID = -7459504722479802812L;
   
-  public String id;
-  public String summary;
-  public IncidentPriority priority;
-  public IncidentSeverity severity;
-  public IncidentImpact impact;
-  public List<Event> events;
+  private String id;
+  private String summary;
+  private IncidentPriority priority;
+  private IncidentSeverity severity;
+  private IncidentImpact impact;
+  private List<Event> events;
+  
+  @JsonCreator
+  public Incident(@JsonProperty("id") String id, @JsonProperty("summary") String summary,
+      @JsonProperty("priority") IncidentPriority priority,
+      @JsonProperty("severity") IncidentSeverity severity,
+      @JsonProperty("impact") IncidentImpact impact,
+      @JsonProperty("events") List<Event> events) {
+    this.id = id;
+    this.summary = summary;
+    this.priority = priority;
+    this.severity = severity;
+    this.impact = impact;
+    this.events = events;
+  }
+  
+  @JsonProperty("id")
+  public String getId() {
+    return id;
+  }
+  
+  @JsonProperty("summary")
+  public String getSummary() {
+    return summary;
+  }
+  
+  @JsonProperty("priority")
+  public IncidentPriority getPriority() {
+    return priority;
+  }
+  
+  @JsonProperty("severity")
+  public IncidentSeverity getIncidentSeverity() {
+    return severity;
+  }
+  
+  @JsonProperty("impact")
+  public IncidentImpact getIncidentImpact() {
+    return impact;
+  }
+  
+  @JsonProperty("events")
+  public List<Event> getEvents() {
+    return events;
+  }
   
   public String toString() {
     return MoreObjects.toStringHelper(this)

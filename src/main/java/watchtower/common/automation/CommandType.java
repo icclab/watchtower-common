@@ -14,5 +14,5 @@
 package watchtower.common.automation;
 
 public enum CommandType {
-  CREATE_JOB
+  RUN_JOB
 }

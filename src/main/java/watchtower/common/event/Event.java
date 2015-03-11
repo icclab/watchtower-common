@@ -13,7 +13,7 @@
  */
 package watchtower.common.event;
 
-import io.dropwizard.validation.ValidationMethod;
+//import io.dropwizard.validation.ValidationMethod;
 
 import java.io.Serializable;
 
@@ -34,6 +34,10 @@ public class Event implements Serializable {
   
   @NotEmpty(message="Empty message")
   private String message;
+  
+  public Event() {
+    // Empty constructor so that Tomcat doesn't crash
+  }
   
   @JsonCreator
   public Event(@JsonProperty("id") String id, @JsonProperty("serviceModel") EventServiceModel serviceModel,
@@ -77,11 +81,6 @@ public class Event implements Serializable {
     if (!other.getMessage().equalsIgnoreCase(message))
       return false;
     
-    return true;
-  }
-  
-  @ValidationMethod
-  public boolean isValid() {
     return true;
   }
   

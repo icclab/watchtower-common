@@ -13,21 +13,35 @@
  */
 package watchtower.common.automation;
 
+import java.io.Serializable;
+
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
-public class Command {
+public class Command implements Serializable {
+  private static final long serialVersionUID = 4913484717464460393L;
+  
+  @NotEmpty(message="Empty command type")
   private CommandType type;
+  
+  @NotEmpty(message="Empty job")
   private Job job;
   
-  public Command(CommandType type, Job job) {
+  @JsonCreator
+  public Command(@JsonProperty("type") CommandType type, @JsonProperty("job") Job job) {
     this.type = type;
     this.job = job;
   }
   
+  @JsonProperty("type")
   public CommandType getType() {
     return type;
   }
   
+  @JsonProperty("job")
   public Job getJob() {
     return job;
   }
