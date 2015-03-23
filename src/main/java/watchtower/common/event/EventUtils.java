@@ -26,15 +26,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class EventUtils {
   private static final Logger logger = LoggerFactory.getLogger(EventUtils.class);
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-  
+
   static {
-    OBJECT_MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    OBJECT_MAPPER
+        .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
     OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     OBJECT_MAPPER.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
     OBJECT_MAPPER.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
     OBJECT_MAPPER.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
   }
-  
+
   public static Event fromJson(byte[] eventJson) {
     try {
       String jsonString = StringEscapeUtils.unescapeJava(new String(eventJson, "UTF-8"));
@@ -42,7 +43,7 @@ public class EventUtils {
     } catch (Exception e) {
       logger.error("Failed to parse event json: {}", e.toString());
     }
-    
+
     return null;
   }
 
@@ -52,14 +53,15 @@ public class EventUtils {
     } catch (JsonProcessingException e) {
       logger.error("Failed to convert event to json: {}", e.toString());
     }
-    
+
     return null;
   }
-  
+
   public static Event clone(Event event) {
     if (event == null)
       return null;
-    
-    return new Event(event.getId(), event.getServiceModel(), event.getMessage());
+
+    return new Event(event.getId(), event.getIncident(), event.getName(), event.getMessage(),
+        event.getServiceModel(), event.getDate());
   }
 }

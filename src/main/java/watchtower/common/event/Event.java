@@ -13,82 +13,150 @@
  */
 package watchtower.common.event;
 
-//import io.dropwizard.validation.ValidationMethod;
-
 import java.io.Serializable;
+import java.util.Date;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+import org.hibernate.annotations.GenericGenerator;
+
+import watchtower.common.incident.Incident;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
 
+@Entity
 public class Event implements Serializable {
   private static final long serialVersionUID = -1783919866246632640L;
-  
-  @NotEmpty(message="Empty id")
+
+  @Id
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  @Column(name = "id", unique = true, nullable = false)
   private String id;
-  
-  @NotEmpty(message="Empty service model")
-  private EventServiceModel serviceModel;
-  
-  @NotEmpty(message="Empty message")
+
+  private Incident incident;
+
+  // @NotNull(message = "Empty name")
+  private String name;
+
+  // @NotNull(message = "Empty message")
   private String message;
-  
+
+  // @NotNull(message = "Empty service model")
+  @Enumerated(EnumType.STRING)
+  private EventServiceModel serviceModel;
+
+  // @NotNull(message = "Empty date")
+  private Date date;
+
   public Event() {
-    // Empty constructor so that Tomcat doesn't crash
+    // Empty constructor
   }
-  
+
   @JsonCreator
-  public Event(@JsonProperty("id") String id, @JsonProperty("serviceModel") EventServiceModel serviceModel,
-      @JsonProperty("message") String message) {
+  public Event(@JsonProperty("id") String id, @JsonProperty("incident") Incident incident,
+      @JsonProperty("name") String name, @JsonProperty("message") String message,
+      @JsonProperty("serviceModel") EventServiceModel serviceModel, @JsonProperty("date") Date date) {
     this.id = id;
     this.serviceModel = serviceModel;
-    this.message = message;
+    this.date = date;
   }
-  
+
   @JsonProperty("id")
   public String getId() {
     return id;
   }
-  
-  @JsonProperty("serviceModel")
-  public EventServiceModel getServiceModel() {
-    return serviceModel;
+
+  @JsonProperty("id")
+  public void setId(String id) {
+    this.id = id;
   }
-  
+
+  @JsonProperty("incident")
+  public Incident getIncident() {
+    return incident;
+  }
+
+  @JsonProperty("incident")
+  public void setIncident(Incident incident) {
+    this.incident = incident;
+  }
+
+  @JsonProperty("name")
+  public String getName() {
+    return name;
+  }
+
+  @JsonProperty("name")
+  public void setName(String name) {
+    this.name = name;
+  }
+
   @JsonProperty("message")
   public String getMessage() {
     return message;
   }
-  
+
+  @JsonProperty("message")
+  public void setMessage(String message) {
+    this.message = message;
+  }
+
+  @JsonProperty("serviceModel")
+  public EventServiceModel getServiceModel() {
+    return serviceModel;
+  }
+
+  @JsonProperty("serviceModel")
+  public void setServiceModel(EventServiceModel serviceModel) {
+    this.serviceModel = serviceModel;
+  }
+
+  @JsonProperty("date")
+  public Date getDate() {
+    return date;
+  }
+
+  @JsonProperty("date")
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
   @Override
   public boolean equals(Object obj) {
     if (this == obj)
       return true;
-    
+
     if (obj == null)
       return false;
-    
+
     if (getClass() != obj.getClass())
       return false;
-    
+
     Event other = (Event) obj;
-    
+
     if (!other.getId().equalsIgnoreCase(id))
       return false;
-    
-    if (!other.getMessage().equalsIgnoreCase(message))
+
+    if (serviceModel != other.getServiceModel())
       return false;
-    
+
+    if (date != other.getDate())
+      return false;
+
     return true;
   }
-  
+
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("id", id)
-        .add("serviceModel", serviceModel)
-        .add("message", message)
-        .toString();
+    return MoreObjects.toStringHelper(this).add("id", id).add("incident", incident)
+        .add("name", name).add("message", message).add("serviceModel", serviceModel)
+        .add("date", date).toString();
   }
 }

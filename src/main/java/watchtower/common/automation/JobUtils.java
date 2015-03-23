@@ -26,15 +26,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class JobUtils {
   private static final Logger logger = LoggerFactory.getLogger(JobUtils.class);
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-  
+
   static {
-    OBJECT_MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    OBJECT_MAPPER
+        .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
     OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     OBJECT_MAPPER.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
     OBJECT_MAPPER.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
     OBJECT_MAPPER.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
   }
-  
+
   public static Job fromJson(byte[] jobJson) {
     try {
       String jsonString = StringEscapeUtils.unescapeJava(new String(jobJson, "UTF-8"));
@@ -42,24 +43,25 @@ public class JobUtils {
     } catch (Exception e) {
       logger.error("Failed to parse command json: {}", e.toString());
     }
-    
+
     return null;
   }
-  
+
   public static String toJson(Job job) {
     try {
       return OBJECT_MAPPER.writeValueAsString(job);
     } catch (JsonProcessingException e) {
       logger.error("Failed to convert command to json: {}", e.toString());
     }
-    
+
     return null;
   }
-  
+
   public static Job clone(Job job) {
     if (job == null)
       return null;
-    
-    return new Job(job.getId(), job.getName(), job.getParameters());
+
+    return new Job(job.getId(), job.getIncident(), job.getName(), job.getParameters(),
+        job.getOutcome());
   }
 }

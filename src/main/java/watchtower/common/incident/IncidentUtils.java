@@ -26,15 +26,16 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class IncidentUtils {
   private static final Logger logger = LoggerFactory.getLogger(IncidentUtils.class);
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-  
+
   static {
-    OBJECT_MAPPER.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
+    OBJECT_MAPPER
+        .setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
     OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     OBJECT_MAPPER.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
     OBJECT_MAPPER.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
     OBJECT_MAPPER.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
   }
-  
+
   public static Incident fromJson(byte[] incidentJson) {
     try {
       String jsonString = StringEscapeUtils.unescapeJava(new String(incidentJson, "UTF-8"));
@@ -42,26 +43,26 @@ public class IncidentUtils {
     } catch (Exception e) {
       logger.error("Failed to parse incident json: {}", e.toString());
     }
-    
+
     return null;
   }
-  
+
   public static String toJson(Incident incident) {
     try {
       return OBJECT_MAPPER.writeValueAsString(incident);
     } catch (JsonProcessingException e) {
       logger.error("Failed to convert command to json: {}", e.toString());
     }
-    
+
     return null;
   }
-  
+
   public static Incident clone(Incident incident) {
     if (incident == null)
       return null;
-    
-    return new Incident(incident.getId(), incident.getSummary(),
-        incident.getPriority(), incident.getIncidentSeverity(),
-        incident.getIncidentImpact(), incident.getEvents());
+
+    return new Incident(incident.getId(), incident.getSummary(), incident.getStatus(),
+        incident.getPriority(), incident.getSeverity(), incident.getImpact(), incident.getEvents(),
+        incident.getDateCreated(), incident.getDateLastUpdated(), incident.getVersion());
   }
 }
