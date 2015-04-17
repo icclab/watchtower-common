@@ -61,7 +61,7 @@ public class EventUtils {
     if (event == null)
       return null;
 
-    return new Event(event.getId(), event.getIncident(), event.getName(), event.getMessage(),
+    return new Event(event.getId(), event.getIncidentId(), event.getName(), event.getMessage(),
         event.getServiceModel(), event.getDate());
   }
 }

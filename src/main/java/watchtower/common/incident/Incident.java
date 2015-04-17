@@ -23,14 +23,11 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
-
-import org.hibernate.annotations.GenericGenerator;
 
 import watchtower.common.automation.Job;
 import watchtower.common.event.Event;
@@ -44,8 +41,8 @@ public class Incident implements Serializable {
   private static final long serialVersionUID = -7459504722479802812L;
 
   @Id
-  @GeneratedValue(generator = "system-uuid")
-  @GenericGenerator(name = "system-uuid", strategy = "uuid")
+  // @GeneratedValue(generator = "system-uuid")
+  // @GenericGenerator(name = "system-uuid", strategy = "uuid")
   @Column(name = "id", unique = true, nullable = false)
   private String id;
 
@@ -63,10 +60,10 @@ public class Incident implements Serializable {
   @Enumerated(EnumType.STRING)
   private IncidentImpact impact;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "incident")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "incidentId")
   private List<Event> events;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "incident")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "incidentId")
   private List<Job> jobs;
 
   @Temporal(TemporalType.TIMESTAMP)
@@ -89,7 +86,7 @@ public class Incident implements Serializable {
       @JsonProperty("priority") IncidentPriority priority,
       @JsonProperty("severity") IncidentSeverity severity,
       @JsonProperty("impact") IncidentImpact impact, @JsonProperty("events") List<Event> events,
-      @JsonProperty("dateCreated") Date dateCreated,
+      @JsonProperty("jobs") List<Job> jobs, @JsonProperty("dateCreated") Date dateCreated,
       @JsonProperty("dateLastUpdated") Date dateLastUpdated, @JsonProperty("version") long version) {
     this.id = id;
     this.summary = summary;
@@ -98,6 +95,17 @@ public class Incident implements Serializable {
     this.severity = severity;
     this.impact = impact;
     this.events = events;
+
+    if (this.events != null)
+      for (Event event : this.events)
+        event.setIncidentId(getId());
+
+    this.jobs = jobs;
+
+    if (this.jobs != null)
+      for (Job job : this.jobs)
+        job.setIncidentId(getId());
+
     this.dateCreated = dateCreated;
     this.dateLastUpdated = dateLastUpdated;
     this.version = version;
@@ -171,6 +179,10 @@ public class Incident implements Serializable {
   @JsonProperty("events")
   public void setEvents(List<Event> events) {
     this.events = events;
+
+    if (this.events != null)
+      for (Event event : this.events)
+        event.setIncidentId(getId());
   }
 
   @JsonProperty("jobs")
@@ -181,6 +193,10 @@ public class Incident implements Serializable {
   @JsonProperty("jobs")
   public void setJobs(List<Job> jobs) {
     this.jobs = jobs;
+
+    if (this.jobs != null)
+      for (Job job : this.jobs)
+        job.setIncidentId(getId());
   }
 
   @JsonProperty("dateCreated")
@@ -232,8 +248,9 @@ public class Incident implements Serializable {
 
   public String toString() {
     return MoreObjects.toStringHelper(this).add("id", id).add("summary", summary)
-        .add("priority", priority).add("severity", severity).add("impact", impact)
-        .add("events", events).add("dateCreated", dateCreated)
-        .add("dateLastUpdated", dateLastUpdated).add("version", version).toString();
+        .add("status", status).add("priority", priority).add("severity", severity)
+        .add("impact", impact).add("events", events).add("jobs", jobs)
+        .add("dateCreated", dateCreated).add("dateLastUpdated", dateLastUpdated)
+        .add("version", version).toString();
   }
 }

@@ -14,16 +14,21 @@
 package watchtower.common.automation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import watchtower.common.incident.Incident;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,30 +40,39 @@ public class Job implements Serializable {
 
   @NotEmpty(message = "Empty id")
   @Id
+  @GeneratedValue(generator = "system-uuid")
+  @GenericGenerator(name = "system-uuid", strategy = "uuid")
   @Column(name = "id", unique = true, nullable = false)
   private String id;
 
-  private Incident incident;
+  private String jobId;
+
+  private String incidentId;
 
   @NotEmpty(message = "Empty name")
   private String name;
 
-  @NotEmpty(message = "Empty parameters")
   @ElementCollection
   private Map<String, String> parameters;
 
-  private String outcome;
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "jobId")
+  private List<JobExecution> executions;
+
+  public Job() {
+    // Empty constructor
+  }
 
   @JsonCreator
-  public Job(@JsonProperty("id") String id, @JsonProperty("incident") Incident incident,
-      @JsonProperty("name") String name,
+  public Job(@JsonProperty("id") String id, @JsonProperty("jobId") String jobId,
+      @JsonProperty("incidentId") String incidentId, @JsonProperty("name") String name,
       @JsonProperty("parameters") Map<String, String> parameters,
-      @JsonProperty("outcome") String outcome) {
+      @JsonProperty("execution") List<JobExecution> executions) {
     this.id = id;
-    this.incident = incident;
+    this.jobId = jobId;
+    this.incidentId = incidentId;
     this.name = name;
     this.parameters = parameters;
-    this.outcome = outcome;
+    this.executions = executions;
   }
 
   @JsonProperty("id")
@@ -66,19 +80,39 @@ public class Job implements Serializable {
     return id;
   }
 
+  @JsonProperty("id")
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  @JsonProperty("jobId")
+  public String getJobId() {
+    return jobId;
+  }
+
+  @JsonProperty("jobId")
+  public void setJobId(String jobId) {
+    this.jobId = jobId;
+  }
+
   @JsonProperty("name")
   public String getName() {
     return name;
   }
 
-  @JsonProperty("incident")
-  public Incident getIncident() {
-    return incident;
+  @JsonProperty("name")
+  public void setName(String name) {
+    this.name = name;
   }
 
-  @JsonProperty("incident")
-  public void setIncident(Incident incident) {
-    this.incident = incident;
+  @JsonProperty("incidentId")
+  public String getIncidentId() {
+    return incidentId;
+  }
+
+  @JsonProperty("incidentId")
+  public void setIncidentId(String incidentId) {
+    this.incidentId = incidentId;
   }
 
   @JsonProperty("parameters")
@@ -86,13 +120,31 @@ public class Job implements Serializable {
     return parameters;
   }
 
-  @JsonProperty("outcome")
-  public String getOutcome() {
-    return outcome;
+  @JsonProperty("parameters")
+  public void setParameters(Map<String, String> parameters) {
+    this.parameters = parameters;
+  }
+
+  @JsonProperty("executions")
+  public List<JobExecution> getExecutions() {
+    return executions;
+  }
+
+  @JsonProperty("executions")
+  public void setExecution(List<JobExecution> executions) {
+    this.executions = executions;
+  }
+
+  public void addExecution(JobExecution execution) {
+    if (executions == null)
+      executions = new ArrayList<JobExecution>();
+
+    executions.add(execution);
   }
 
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("id", id).add("incident", incident)
-        .add("name", name).add("parameters", parameters).toString();
+    return MoreObjects.toStringHelper(this).add("id", id).add("jobId", jobId)
+        .add("incidentId", incidentId).add("name", name).add("parameters", parameters)
+        .add("executions", executions).toString();
   }
 }

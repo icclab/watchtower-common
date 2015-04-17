@@ -25,8 +25,6 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import watchtower.common.incident.Incident;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
@@ -41,19 +39,13 @@ public class Event implements Serializable {
   @Column(name = "id", unique = true, nullable = false)
   private String id;
 
-  private Incident incident;
-
-  // @NotNull(message = "Empty name")
+  private String incidentId;
   private String name;
-
-  // @NotNull(message = "Empty message")
   private String message;
 
-  // @NotNull(message = "Empty service model")
   @Enumerated(EnumType.STRING)
   private EventServiceModel serviceModel;
 
-  // @NotNull(message = "Empty date")
   private Date date;
 
   public Event() {
@@ -61,10 +53,13 @@ public class Event implements Serializable {
   }
 
   @JsonCreator
-  public Event(@JsonProperty("id") String id, @JsonProperty("incident") Incident incident,
+  public Event(@JsonProperty("id") String id, @JsonProperty("incidentId") String incidentId,
       @JsonProperty("name") String name, @JsonProperty("message") String message,
       @JsonProperty("serviceModel") EventServiceModel serviceModel, @JsonProperty("date") Date date) {
     this.id = id;
+    this.incidentId = incidentId;
+    this.name = name;
+    this.message = message;
     this.serviceModel = serviceModel;
     this.date = date;
   }
@@ -79,14 +74,14 @@ public class Event implements Serializable {
     this.id = id;
   }
 
-  @JsonProperty("incident")
-  public Incident getIncident() {
-    return incident;
+  @JsonProperty("incidentId")
+  public String getIncidentId() {
+    return incidentId;
   }
 
-  @JsonProperty("incident")
-  public void setIncident(Incident incident) {
-    this.incident = incident;
+  @JsonProperty("incidentId")
+  public void setIncidentId(String incidentId) {
+    this.incidentId = incidentId;
   }
 
   @JsonProperty("name")
@@ -129,13 +124,29 @@ public class Event implements Serializable {
     this.date = date;
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
+  public boolean isSimilarTo(Event event) {
+    if (equals(event))
       return true;
 
+    if (!event.getName().equalsIgnoreCase(name))
+      return false;
+
+    if (!event.getMessage().equalsIgnoreCase(message))
+      return false;
+
+    if (serviceModel != event.getServiceModel())
+      return false;
+
+    return true;
+  }
+
+  @Override
+  public boolean equals(Object obj) {
     if (obj == null)
       return false;
+
+    if (this == obj)
+      return true;
 
     if (getClass() != obj.getClass())
       return false;
@@ -145,17 +156,26 @@ public class Event implements Serializable {
     if (!other.getId().equalsIgnoreCase(id))
       return false;
 
+    if (!other.getIncidentId().equalsIgnoreCase(incidentId))
+      return false;
+
+    if (!other.getName().equalsIgnoreCase(name))
+      return false;
+
+    if (!other.getMessage().equalsIgnoreCase(message))
+      return false;
+
     if (serviceModel != other.getServiceModel())
       return false;
 
-    if (date != other.getDate())
+    if (other.getDate().equals(date))
       return false;
 
     return true;
   }
 
   public String toString() {
-    return MoreObjects.toStringHelper(this).add("id", id).add("incident", incident)
+    return MoreObjects.toStringHelper(this).add("id", id).add("incidentId", incidentId)
         .add("name", name).add("message", message).add("serviceModel", serviceModel)
         .add("date", date).toString();
   }

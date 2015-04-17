@@ -41,7 +41,7 @@ public class JobUtils {
       String jsonString = StringEscapeUtils.unescapeJava(new String(jobJson, "UTF-8"));
       return OBJECT_MAPPER.readValue(jsonString, Job.class);
     } catch (Exception e) {
-      logger.error("Failed to parse command json: {}", e.toString());
+      logger.error("Failed to parse job json: {}", e.toString());
     }
 
     return null;
@@ -51,7 +51,7 @@ public class JobUtils {
     try {
       return OBJECT_MAPPER.writeValueAsString(job);
     } catch (JsonProcessingException e) {
-      logger.error("Failed to convert command to json: {}", e.toString());
+      logger.error("Failed to convert job to json: {}", e.toString());
     }
 
     return null;
@@ -61,7 +61,7 @@ public class JobUtils {
     if (job == null)
       return null;
 
-    return new Job(job.getId(), job.getIncident(), job.getName(), job.getParameters(),
-        job.getOutcome());
+    return new Job(job.getId(), job.getJobId(), job.getIncidentId(), job.getName(),
+        job.getParameters(), job.getExecutions());
   }
 }

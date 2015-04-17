@@ -47,11 +47,22 @@ public class IncidentUtils {
     return null;
   }
 
+  public static Incident fromJson(String incidentJson) {
+    try {
+      String jsonString = StringEscapeUtils.unescapeJava(incidentJson);
+      return OBJECT_MAPPER.readValue(jsonString, Incident.class);
+    } catch (Exception e) {
+      logger.error("Failed to parse incident json: {}", e.toString());
+    }
+
+    return null;
+  }
+
   public static String toJson(Incident incident) {
     try {
       return OBJECT_MAPPER.writeValueAsString(incident);
     } catch (JsonProcessingException e) {
-      logger.error("Failed to convert command to json: {}", e.toString());
+      logger.error("Failed to convert incident to json: {}", e.toString());
     }
 
     return null;
@@ -63,6 +74,7 @@ public class IncidentUtils {
 
     return new Incident(incident.getId(), incident.getSummary(), incident.getStatus(),
         incident.getPriority(), incident.getSeverity(), incident.getImpact(), incident.getEvents(),
-        incident.getDateCreated(), incident.getDateLastUpdated(), incident.getVersion());
+        incident.getJobs(), incident.getDateCreated(), incident.getDateLastUpdated(),
+        incident.getVersion());
   }
 }
