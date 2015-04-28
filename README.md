@@ -1,6 +1,6 @@
 *Please note that all watchtower components are under heavy development and the norm is that things will break. Please be patient with us until the first stable release.*
 
-<img style="float: left; padding-right: 10px" src="https://raw.githubusercontent.com/icclab/watchtower-common/master/watchtower.png" height="100" alt="Watchtower" title="Watchtower">
+![Watchtower](https://raw.githubusercontent.com/icclab/watchtower-common/master/watchtower.png)
 
 # Overview
 
