@@ -1,7 +1,12 @@
 *Please note that all watchtower components are under heavy development and the norm is that things will break. Please be patient with us until the first stable release.*
 
+<div style="float: left; padding-right: 10px">
+	<img src="https://raw.github.com/nemros/watchtower-common/master/watchtower.png" width="92.66" height="100" alt="Watchtower" title="Watchtower">
+</div>
+
 # Overview
-**watchtower-common** contains common, reusable, code for all **watchtower** components.
+
+**watchtower-common** contains common, reusable, code for all **watchtower** components. It facilitates communication between components through common objects and provides Json serialization for them.
 
 ### Build Instructions
 
