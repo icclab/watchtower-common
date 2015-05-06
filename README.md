@@ -4,6 +4,9 @@
 	<img src="https://raw.githubusercontent.com/icclab/watchtower-common/master/watchtower.png" alt="Watchtower" title="Watchtower">
 </div>
 
+[![Build Status](https://travis-ci.org/icclab/watchtower-common.svg?branch=master)](https://travis-ci.org/icclab/watchtower-common)
+[![Coverage Status](https://coveralls.io/repos/icclab/watchtower-common/badge.svg?branch=master)](https://coveralls.io/r/icclab/watchtower-common?branch=master)
+
 # Overview
 
 **watchtower-common** contains common, reusable, code for all **watchtower** components. It facilitates communication between components through common objects and provides Json serialization for them.
