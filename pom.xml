@@ -36,6 +36,7 @@
 		<jackson.version>2.5.1</jackson.version>
 		<guava.version>18.0</guava.version>
 		<guice.version>3.0</guice.version>
+		<testng.version>6.8.21</testng.version>
 		<maven.jacoco.version>0.7.4.201502262128</maven.jacoco.version>
 		<maven.coveralls.version>3.1.0</maven.coveralls.version>
 	</properties>
@@ -109,6 +110,11 @@
 					<artifactId>slf4j-simple</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -270,6 +276,14 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>${maven.jacoco.version}</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
