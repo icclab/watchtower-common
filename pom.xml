@@ -7,7 +7,7 @@
 	<packaging>jar</packaging>
 
 	<name>watchtower-common</name>
-	<description>watchtower-common contains common, reusable, code for all watchtower components</description>
+	<description>watchtower-common contains common, reusable, code for all Watchtower components</description>
 	<url>https://github.com/icclab/watchtower-common</url>
 
 	<licenses>
