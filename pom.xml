@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>watchtower</groupId>
@@ -35,6 +36,8 @@
 		<jackson.version>2.5.1</jackson.version>
 		<guava.version>18.0</guava.version>
 		<guice.version>3.0</guice.version>
+		<maven.jacoco.version>0.7.4.201502262128</maven.jacoco.version>
+		<maven.coveralls.version>3.1.0</maven.coveralls.version>
 	</properties>
 
 	<scm>
@@ -262,6 +265,16 @@
 						</tagletArtifact>
 					</tagletArtifacts>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${maven.jacoco.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>${maven.coveralls.version}</version>
 			</plugin>
 		</plugins>
 	</build>
