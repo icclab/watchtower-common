@@ -168,7 +168,7 @@ public class Event implements Serializable {
     if (serviceModel != other.getServiceModel())
       return false;
 
-    if (other.getDate().equals(date))
+    if (other.getDate().compareTo(date) != 0)
       return false;
 
     return true;
