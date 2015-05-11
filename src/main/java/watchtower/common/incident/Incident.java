@@ -243,7 +243,50 @@ public class Incident implements Serializable {
     if (!(object instanceof Incident))
       return false;
     Incident other = (Incident) object;
-    return getId().equals(other.getId());
+
+    if (!getId().equals(other.getId()))
+      return false;
+
+    if (!getSummary().equalsIgnoreCase(other.getSummary()))
+      return false;
+
+    if (!getStatus().equals(other.getStatus()))
+      return false;
+
+    if (!getPriority().equals(other.getPriority()))
+      return false;
+
+    if (!getSeverity().equals(other.getSeverity()))
+      return false;
+
+    if (!getImpact().equals(other.getImpact()))
+      return false;
+
+    if (getEvents() == null) {
+      if (other.getEvents() != null)
+        return false;
+    } else if (!getEvents().equals(other.getEvents()))
+      return false;
+
+    if (getJobs() == null) {
+      if (other.getJobs() != null)
+        return false;
+    } else if (!getJobs().equals(other.getJobs()))
+      return false;
+
+    if (getDateCreated().compareTo(other.getDateCreated()) != 0)
+      return false;
+
+    if (getDateLastUpdated().compareTo(other.getDateLastUpdated()) != 0)
+      return false;
+
+    if (getVersion() != other.getVersion())
+      return false;
+
+    if (!getSeverity().equals(other.getSeverity()))
+      return false;
+
+    return true;
   }
 
   public String toString() {
