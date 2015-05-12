@@ -142,6 +142,40 @@ public class Job implements Serializable {
     executions.add(execution);
   }
 
+  @Override
+  public boolean equals(Object object) {
+    if (this == object)
+      return true;
+    if (object == null)
+      return false;
+    if (!(object instanceof Job))
+      return false;
+    Job other = (Job) object;
+
+    if (!getId().equalsIgnoreCase(other.getId()))
+      return false;
+
+    if (!getJobId().equalsIgnoreCase(other.getJobId()))
+      return false;
+
+    if (!getName().equalsIgnoreCase(other.getName()))
+      return false;
+
+    if (getParameters() == null) {
+      if (other.getParameters() != null)
+        return false;
+    } else if (!getParameters().equals(other.getParameters()))
+      return false;
+
+    if (getExecutions() == null) {
+      if (other.getExecutions() != null)
+        return false;
+    } else if (!getExecutions().equals(other.getExecutions()))
+      return false;
+
+    return true;
+  }
+
   public String toString() {
     return MoreObjects.toStringHelper(this).add("id", id).add("jobId", jobId)
         .add("incidentId", incidentId).add("name", name).add("parameters", parameters)
