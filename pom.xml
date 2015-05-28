@@ -36,7 +36,7 @@
 		<jackson.version>2.5.1</jackson.version>
 		<guava.version>18.0</guava.version>
 		<guice.version>3.0</guice.version>
-		<testng.version>6.8.21</testng.version>
+		<testng.version>6.9.4</testng.version>
 		<maven.jacoco.version>0.7.4.201502262128</maven.jacoco.version>
 		<maven.coveralls.version>3.1.0</maven.coveralls.version>
 	</properties>

@@ -19,9 +19,11 @@ import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.google.common.base.MoreObjects;
 
 @Entity
+@JsonPropertyOrder({"id"})
 public class JobExecution {
   @Id
   @Column(name = "id", unique = true, nullable = false)
