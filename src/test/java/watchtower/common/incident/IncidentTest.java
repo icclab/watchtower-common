@@ -1,11 +1,10 @@
 /*
- * Copyright 2015 Zurich Universityimport static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
-
-import java.util.Date;
-
-import org.testng.annotations.Test;
-se. You may obtain a copy of the License at
+ * Copyright 2015 Zurich Universityimport static org.testng.Assert.assertEquals; import static
+ * org.testng.Assert.assertNotEquals;
+ * 
+ * import java.util.Date;
+ * 
+ * import org.testng.annotations.Test; se. You may obtain a copy of the License at
  * 
  * http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -19,9 +18,14 @@ package watchtower.common.incident;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.testng.annotations.Test;
+
+import watchtower.common.automation.Job;
+import watchtower.common.event.Event;
 
 @Test
 public class IncidentTest {
@@ -34,16 +38,24 @@ public class IncidentTest {
         incidentJson,
         "{\"id\":null,\"summary\":null,\"status\":null,\"priority\":null,\"severity\":null,\"impact\":null,\"events\":null,\"jobs\":null,\"dateCreated\":null,\"dateLastUpdated\":null,\"version\":0}");
 
+    Event event = new Event();
+    List<Event> events = new ArrayList<Event>();
+    events.add(event);
+
+    Job job = new Job();
+    List<Job> jobs = new ArrayList<Job>();
+    jobs.add(job);
+
     incident =
         new Incident("id", "summary", IncidentStatus.NEW, IncidentPriority.NORMAL,
-            IncidentSeverity.MINOR, IncidentImpact.INSIGNIFICANT, null, null, new Date(1399986000),
-            new Date(1399986001), 0);
+            IncidentSeverity.MINOR, IncidentImpact.INSIGNIFICANT, events, jobs,
+            new Date(1399986000), new Date(1399986001), 0);
 
     incidentJson = IncidentUtils.toJson(incident);
 
     assertEquals(
         incidentJson,
-        "{\"id\":\"id\",\"summary\":\"summary\",\"status\":\"NEW\",\"priority\":\"NORMAL\",\"severity\":\"MINOR\",\"impact\":\"INSIGNIFICANT\",\"events\":null,\"jobs\":null,\"dateCreated\":1399986000,\"dateLastUpdated\":1399986001,\"version\":0}");
+        "{\"id\":\"id\",\"summary\":\"summary\",\"status\":\"NEW\",\"priority\":\"NORMAL\",\"severity\":\"MINOR\",\"impact\":\"INSIGNIFICANT\",\"events\":[{\"id\":null,\"incidentId\":\"id\",\"name\":null,\"message\":null,\"serviceModel\":null,\"date\":null}],\"jobs\":[{\"id\":null,\"jobId\":null,\"incidentId\":\"id\",\"name\":null,\"parameters\":null,\"executions\":null}],\"dateCreated\":1399986000,\"dateLastUpdated\":1399986001,\"version\":0}");
   }
 
   public void shouldSerializeValueUTF() {

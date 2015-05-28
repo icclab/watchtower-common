@@ -152,13 +152,22 @@ public class Job implements Serializable {
       return false;
     Job other = (Job) object;
 
-    if (!getId().equalsIgnoreCase(other.getId()))
+    if (getId() == null) {
+      if (other.getId() != null)
+        return false;
+    } else if (!getId().equalsIgnoreCase(other.getId()))
       return false;
 
-    if (!getJobId().equalsIgnoreCase(other.getJobId()))
+    if (getJobId() == null) {
+      if (other.getJobId() != null)
+        return false;
+    } else if (!getJobId().equalsIgnoreCase(other.getJobId()))
       return false;
 
-    if (!getName().equalsIgnoreCase(other.getName()))
+    if (getName() == null) {
+      if (other.getName() != null)
+        return false;
+    } else if (!getName().equalsIgnoreCase(other.getName()))
       return false;
 
     if (getParameters() == null) {
